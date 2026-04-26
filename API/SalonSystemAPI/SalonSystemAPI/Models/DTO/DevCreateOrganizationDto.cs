@@ -2,12 +2,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SalonSystemAPI.Models.DTO
 {
-    public class CreateOrganizationDto
+    public class DevCreateOrganizationDto
     {
         [Required] public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Location { get; set; } = string.Empty;
         [EmailAddress] public string Email { get; set; } = string.Empty;
         [Required] public string BranchName { get; set; } = string.Empty;
+        public int? OwnerUserId { get; set; }
     }
 }

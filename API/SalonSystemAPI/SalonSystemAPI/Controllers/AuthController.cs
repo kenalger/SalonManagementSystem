@@ -42,6 +42,8 @@ namespace SalonSystemAPI.Controllers
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Role, user.Role),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
@@ -59,6 +61,7 @@ namespace SalonSystemAPI.Controllers
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Email = user.Email,
                 FullName = $"{user.FirstName} {user.LastName}",
+                Role = user.Role,
                 ExpiresAt = expiry
             });
         }

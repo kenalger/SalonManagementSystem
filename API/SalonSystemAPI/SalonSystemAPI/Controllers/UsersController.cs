@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace SalonSystemAPI.Controllers
 
         [HttpPost("register")]
         [EnableRateLimiting("register")]
+        [Authorize(Roles = "Developer")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);

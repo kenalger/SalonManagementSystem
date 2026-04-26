@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public int OrganizationId { get; set; }
+        public int BranchId { get; set; }
         public int ServiceTypeId { get; set; }
         public int? CustomerId { get; set; } // only if member
         public string? Name { get; set; } // booked or walkIn

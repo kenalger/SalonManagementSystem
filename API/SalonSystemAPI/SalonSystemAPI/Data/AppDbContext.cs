@@ -10,6 +10,7 @@ namespace SalonSystemAPI.Data
         public DbSet<Users> Users { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<OrganizationMembers> OrganizationMembers { get; set; }
+        public DbSet<Branch> Branches { get; set; }
         public DbSet<Bookings> Bookings { get; set; }
         public DbSet<ServiceType> ServiceTypes { get; set; }
 
@@ -22,6 +23,7 @@ namespace SalonSystemAPI.Data
             modelBuilder.Entity<Users>()
                 .Property(u => u.DateCreated)
                 .HasDefaultValueSql("NOW()");
+
         }
     }
 }

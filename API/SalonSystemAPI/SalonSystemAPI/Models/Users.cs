@@ -10,5 +10,6 @@
         public bool IsEmailConfirmed { get; set; }
         public bool IsActive { get; set; } = true;
         public DateTime DateCreated { get; set; }
+        public string Role { get; set; } = "User";
     }
 }
