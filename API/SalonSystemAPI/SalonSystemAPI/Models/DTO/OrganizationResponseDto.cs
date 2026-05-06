@@ -9,5 +9,8 @@ namespace SalonSystemAPI.Models.DTO
         public string Email { get; set; } = string.Empty;
         public DateTime DateCreated { get; set; }
         public string? InviteCode { get; set; }
+        public string? BranchName { get; set; }
+        public string? UserRole { get; set; }
+        public int StaffCount { get; set; }
     }
 }

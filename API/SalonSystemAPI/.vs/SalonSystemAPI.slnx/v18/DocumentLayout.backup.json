@@ -3,24 +3,64 @@
   "WorkspaceRootPath": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B29BCD77-2E51-45BB-9AAB-DB0C05E86247}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\models\\servicetype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B29BCD77-2E51-45BB-9AAB-DB0C05E86247}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\models\\servicetype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\task\\scalability.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\task\\scalability.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B29BCD77-2E51-45BB-9AAB-DB0C05E86247}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\models\\organizationmembers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B29BCD77-2E51-45BB-9AAB-DB0C05E86247}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\models\\organizationmembers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\task\\reportkpi.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\task\\reportkpi.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B29BCD77-2E51-45BB-9AAB-DB0C05E86247}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\models\\bookings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B29BCD77-2E51-45BB-9AAB-DB0C05E86247}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\models\\bookings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\task\\client.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\task\\client.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B29BCD77-2E51-45BB-9AAB-DB0C05E86247}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\models\\users.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B29BCD77-2E51-45BB-9AAB-DB0C05E86247}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\models\\users.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\task\\reportdashboard.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\task\\reportdashboard.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B29BCD77-2E51-45BB-9AAB-DB0C05E86247}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\models\\organization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B29BCD77-2E51-45BB-9AAB-DB0C05E86247}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\models\\organization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\models\\bookings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\models\\bookings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\controllers\\bookingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\controllers\\bookingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\models\\staffquota.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\models\\staffquota.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\controllers\\servicetypescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\controllers\\servicetypescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\task\\appointment.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\task\\appointment.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\task\\servicetypes.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\task\\servicetypes.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\models\\servicetype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\models\\servicetype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\models\\organization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\models\\organization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\models\\organizationmembers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\models\\organizationmembers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\models\\branch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\models\\branch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|c:\\users\\ken alger\\documents\\my apps\\salonmanagementsystem\\api\\salonsystemapi\\salonsystemapi\\models\\users.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10D19DF1-C320-7609-553A-82A7F9660034}|SalonSystemAPI\\SalonSystemAPI.csproj|solutionrelative:salonsystemapi\\models\\users.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,63 +70,180 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "OrganizationMembers.cs",
-              "DocumentMoniker": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Models\\OrganizationMembers.cs",
-              "RelativeDocumentMoniker": "SalonSystemAPI\\Models\\OrganizationMembers.cs",
-              "ToolTip": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Models\\OrganizationMembers.cs",
-              "RelativeToolTip": "SalonSystemAPI\\Models\\OrganizationMembers.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-17T12:26:50.874Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ServiceType.cs",
-              "DocumentMoniker": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Models\\ServiceType.cs",
-              "RelativeDocumentMoniker": "SalonSystemAPI\\Models\\ServiceType.cs",
-              "ToolTip": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Models\\ServiceType.cs",
-              "RelativeToolTip": "SalonSystemAPI\\Models\\ServiceType.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-17T11:53:05.053Z",
+              "Title": "scalability.md",
+              "DocumentMoniker": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Task\\scalability.md",
+              "RelativeDocumentMoniker": "SalonSystemAPI\\Task\\scalability.md",
+              "ToolTip": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Task\\scalability.md",
+              "RelativeToolTip": "SalonSystemAPI\\Task\\scalability.md",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAwwGEAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-01T10:25:49.877Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "client.md",
+              "DocumentMoniker": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Task\\client.md",
+              "RelativeDocumentMoniker": "SalonSystemAPI\\Task\\client.md",
+              "ToolTip": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Task\\client.md",
+              "RelativeToolTip": "SalonSystemAPI\\Task\\client.md",
+              "ViewState": "AgIAANEAAAAAAAAAAADwv+wAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-04-30T14:00:50.116Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "reportdashboard.md",
+              "DocumentMoniker": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Task\\reportdashboard.md",
+              "RelativeDocumentMoniker": "SalonSystemAPI\\Task\\reportdashboard.md",
+              "ToolTip": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Task\\reportdashboard.md",
+              "RelativeToolTip": "SalonSystemAPI\\Task\\reportdashboard.md",
+              "ViewState": "AgIAADIAAAAAAAAAAAAwwIoAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-04-30T13:41:37.087Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ReportKPI.md",
+              "DocumentMoniker": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Task\\ReportKPI.md",
+              "RelativeDocumentMoniker": "SalonSystemAPI\\Task\\ReportKPI.md",
+              "ToolTip": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Task\\ReportKPI.md",
+              "RelativeToolTip": "SalonSystemAPI\\Task\\ReportKPI.md",
+              "ViewState": "AgIAAJkAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-04-27T15:37:45.58Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "StaffQuota.cs",
+              "DocumentMoniker": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Models\\StaffQuota.cs",
+              "RelativeDocumentMoniker": "SalonSystemAPI\\Models\\StaffQuota.cs",
+              "ToolTip": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Models\\StaffQuota.cs",
+              "RelativeToolTip": "SalonSystemAPI\\Models\\StaffQuota.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAA0wCsAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-27T15:34:53.374Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "BookingsController.cs",
+              "DocumentMoniker": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Controllers\\BookingsController.cs",
+              "RelativeDocumentMoniker": "SalonSystemAPI\\Controllers\\BookingsController.cs",
+              "ToolTip": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Controllers\\BookingsController.cs",
+              "RelativeToolTip": "SalonSystemAPI\\Controllers\\BookingsController.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAAAwwDgAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-27T15:08:12.423Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ServiceTypesController.cs",
+              "DocumentMoniker": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Controllers\\ServiceTypesController.cs",
+              "RelativeDocumentMoniker": "SalonSystemAPI\\Controllers\\ServiceTypesController.cs",
+              "ToolTip": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Controllers\\ServiceTypesController.cs",
+              "RelativeToolTip": "SalonSystemAPI\\Controllers\\ServiceTypesController.cs",
+              "ViewState": "AgIAAKQAAAAAAAAAAAAuwLAAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-27T14:56:36.987Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "servicetypes.md",
+              "DocumentMoniker": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Task\\servicetypes.md",
+              "RelativeDocumentMoniker": "SalonSystemAPI\\Task\\servicetypes.md",
+              "ToolTip": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Task\\servicetypes.md",
+              "RelativeToolTip": "SalonSystemAPI\\Task\\servicetypes.md",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAwwGEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-04-27T14:46:53.331Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Appointment.md",
+              "DocumentMoniker": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Task\\Appointment.md",
+              "RelativeDocumentMoniker": "SalonSystemAPI\\Task\\Appointment.md",
+              "ToolTip": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Task\\Appointment.md",
+              "RelativeToolTip": "SalonSystemAPI\\Task\\Appointment.md",
+              "ViewState": "AgIAAIsAAAAAAAAAAAAwwJEAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-04-27T13:58:18.923Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "Bookings.cs",
               "DocumentMoniker": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Models\\Bookings.cs",
               "RelativeDocumentMoniker": "SalonSystemAPI\\Models\\Bookings.cs",
               "ToolTip": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Models\\Bookings.cs",
               "RelativeToolTip": "SalonSystemAPI\\Models\\Bookings.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-17T11:51:07.148Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-17T11:51:07.148Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 13,
+              "Title": "Branch.cs",
+              "DocumentMoniker": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Models\\Branch.cs",
+              "RelativeDocumentMoniker": "SalonSystemAPI\\Models\\Branch.cs",
+              "ToolTip": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Models\\Branch.cs",
+              "RelativeToolTip": "SalonSystemAPI\\Models\\Branch.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-18T03:09:31.265Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "OrganizationMembers.cs",
+              "DocumentMoniker": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Models\\OrganizationMembers.cs",
+              "RelativeDocumentMoniker": "SalonSystemAPI\\Models\\OrganizationMembers.cs",
+              "ToolTip": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Models\\OrganizationMembers.cs",
+              "RelativeToolTip": "SalonSystemAPI\\Models\\OrganizationMembers.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-17T12:26:50.874Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ServiceType.cs",
+              "DocumentMoniker": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Models\\ServiceType.cs",
+              "RelativeDocumentMoniker": "SalonSystemAPI\\Models\\ServiceType.cs",
+              "ToolTip": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Models\\ServiceType.cs",
+              "RelativeToolTip": "SalonSystemAPI\\Models\\ServiceType.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-17T11:53:05.053Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "Organization.cs",
               "DocumentMoniker": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Models\\Organization.cs",
               "RelativeDocumentMoniker": "SalonSystemAPI\\Models\\Organization.cs",
               "ToolTip": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Models\\Organization.cs",
               "RelativeToolTip": "SalonSystemAPI\\Models\\Organization.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAApAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-17T11:42:00.687Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-17T11:42:00.687Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 14,
               "Title": "Users.cs",
               "DocumentMoniker": "C:\\Users\\Ken Alger\\Documents\\My Apps\\SalonManagementSystem\\API\\SalonSystemAPI\\SalonSystemAPI\\Models\\Users.cs",
               "RelativeDocumentMoniker": "SalonSystemAPI\\Models\\Users.cs",
@@ -94,8 +251,7 @@
               "RelativeToolTip": "SalonSystemAPI\\Models\\Users.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-17T11:40:27.253Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-17T11:40:27.253Z"
             }
           ]
         }

@@ -19,6 +19,7 @@ export function AuthProvider({ children }) {
       id: tokenData.userId,
       email: tokenData.email,
       fullName: tokenData.fullName,
+      role: tokenData.role,
     };
     localStorage.setItem('token', tokenData.token);
     localStorage.setItem('user', JSON.stringify(user));
@@ -35,8 +36,18 @@ export function AuthProvider({ children }) {
     setAuth({ token: null, user: null, organization: null });
   }, []);
 
+  const isDeveloper = auth.user?.role === 'Developer';
+
   return (
-    <AuthContext.Provider value={{ ...auth, login, logout, setOrganization }}>
+    <AuthContext.Provider
+      value={{
+        ...auth,
+        login,
+        logout,
+        setOrganization,
+        isDeveloper,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

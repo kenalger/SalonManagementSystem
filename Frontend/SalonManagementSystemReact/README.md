@@ -44,3 +44,12 @@ src/
 │── styles/              # Global CSS
 │── App.jsx
 │── main.jsx
+
+---
+
+## UI/UX Conventions
+
+| Pattern | Description | Used In |
+|---|---|---|
+| **Row Action Menu** | Table rows use a single `⋯` (MoreHorizontal) trigger → `DropdownMenu`. Edit, Duplicate, Activate/Deactivate (color-coded), Delete (red, separated). | `ServicesPage.jsx` |
+| **N/A Quick-Fill** | Optional fields show a small muted `N/A` chip next to the label. One click fills the input with `"N/A"`. | `AppointmentsPage.jsx` — Name, Contact |

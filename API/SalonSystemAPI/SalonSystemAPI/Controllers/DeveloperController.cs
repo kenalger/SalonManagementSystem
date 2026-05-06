@@ -62,9 +62,13 @@ namespace SalonSystemAPI.Controllers
 
         [HttpPost("users")]
         [Authorize(Roles = "Developer")]
-        public async Task<IActionResult> CreateUser([FromBody] RegisterDto dto)
+        public async Task<IActionResult> CreateUser([FromBody] DevCreateUserDto dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            string[] allowedRoles = ["Admin", "User"];
+            if (!allowedRoles.Contains(dto.Role))
+                return BadRequest(new { message = "Role must be 'Admin' or 'User'." });
 
             var exists = await _db.Users.AnyAsync(u => u.Email == dto.Email);
             if (exists)
@@ -79,7 +83,7 @@ namespace SalonSystemAPI.Controllers
                 DateCreated = DateTime.UtcNow,
                 IsActive = true,
                 IsEmailConfirmed = false,
-                Role = "User"
+                Role = dto.Role
             };
 
             _db.Users.Add(user);
@@ -95,6 +99,26 @@ namespace SalonSystemAPI.Controllers
                 user.IsActive,
                 user.DateCreated
             });
+        }
+
+        [HttpPatch("users/{id}/role")]
+        [Authorize(Roles = "Developer")]
+        public async Task<IActionResult> UpdateUserRole(int id, [FromBody] UpdateUserRoleDto dto)
+        {
+            var user = await _db.Users.FindAsync(id);
+            if (user == null) return NotFound(new { message = "User not found." });
+
+            if (user.Role == "Developer")
+                return BadRequest(new { message = "Cannot change the role of a Developer account." });
+
+            string[] allowedRoles = ["Admin", "User"];
+            if (!allowedRoles.Contains(dto.Role))
+                return BadRequest(new { message = "Role must be 'Admin' or 'User'." });
+
+            user.Role = dto.Role;
+            await _db.SaveChangesAsync();
+
+            return Ok(new { user.Id, user.Role });
         }
 
         [HttpPatch("users/{id}/toggle-active")]
@@ -118,7 +142,6 @@ namespace SalonSystemAPI.Controllers
         public async Task<IActionResult> GetOrganizations()
         {
             var orgs = await _db.Organizations
-                .Where(o => o.IsActive)
                 .OrderByDescending(o => o.DateCreated)
                 .ToListAsync();
 
@@ -150,6 +173,7 @@ namespace SalonSystemAPI.Controllers
                 o.Email,
                 o.DateCreated,
                 o.InviteCode,
+                o.IsActive,
                 MemberCount = memberCounts.FirstOrDefault(mc => mc.OrgId == o.Id)?.Count ?? 0,
                 BranchCount = branches.Count(b => b.OrganizationId == o.Id),
                 Owner = owners.FirstOrDefault(ow => ow.OrganizationId == o.Id)
@@ -240,6 +264,175 @@ namespace SalonSystemAPI.Controllers
                 await tx.RollbackAsync();
                 throw;
             }
+        }
+
+        // PUT /api/developer/organizations/{id}
+        [HttpPut("organizations/{id}")]
+        [Authorize(Roles = "Developer")]
+        public async Task<IActionResult> UpdateOrganization(int id, [FromBody] UpdateOrganizationDto dto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var org = await _db.Organizations.FindAsync(id);
+            if (org == null) return NotFound(new { message = "Organization not found." });
+
+            org.Name = dto.Name.Trim();
+            org.Description = dto.Description?.Trim() ?? org.Description;
+            org.Location = dto.Location?.Trim() ?? org.Location;
+            org.Email = dto.Email?.Trim() ?? org.Email;
+
+            await _db.SaveChangesAsync();
+            return Ok(new { org.Id, org.Name, org.Description, org.Location, org.Email });
+        }
+
+        // PATCH /api/developer/organizations/{id}/toggle-active
+        [HttpPatch("organizations/{id}/toggle-active")]
+        [Authorize(Roles = "Developer")]
+        public async Task<IActionResult> ToggleOrganizationActive(int id)
+        {
+            var org = await _db.Organizations.FindAsync(id);
+            if (org == null) return NotFound(new { message = "Organization not found." });
+
+            org.IsActive = !org.IsActive;
+            await _db.SaveChangesAsync();
+
+            return Ok(new { org.Id, org.IsActive });
+        }
+
+        // POST /api/developer/organizations/{id}/members
+        [HttpPost("organizations/{id}/members")]
+        [Authorize(Roles = "Developer")]
+        public async Task<IActionResult> AddOrgMember(int id, [FromBody] AddOrgMemberDto dto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var org = await _db.Organizations.FindAsync(id);
+            if (org == null) return NotFound(new { message = "Organization not found." });
+
+            var user = await _db.Users.FindAsync(dto.UserId);
+            if (user == null || !user.IsActive)
+                return BadRequest(new { message = "User not found or inactive." });
+
+            var alreadyMember = await _db.OrganizationMembers
+                .AnyAsync(m => m.UserId == dto.UserId && m.OrganizationId == id);
+            if (alreadyMember)
+                return Conflict(new { message = "User is already a member of this organization." });
+
+            string[] allowedRoles = ["Owner", "Staff"];
+            if (!allowedRoles.Contains(dto.Role))
+                return BadRequest(new { message = "Role must be 'Owner' or 'Staff'." });
+
+            if (dto.Role == "Owner")
+            {
+                var existingOwner = await _db.OrganizationMembers
+                    .AnyAsync(m => m.OrganizationId == id && m.Role == "Owner");
+                if (existingOwner)
+                    return Conflict(new { message = "This organization already has an owner." });
+
+                var alreadyOwnsAnother = await _db.OrganizationMembers
+                    .AnyAsync(m => m.UserId == dto.UserId && m.Role == "Owner");
+                if (alreadyOwnsAnother)
+                    return Conflict(new { message = "This user already owns another organization." });
+            }
+
+            if (dto.Role == "Staff")
+            {
+                var staffCount = await _db.OrganizationMembers
+                    .CountAsync(m => m.OrganizationId == id && m.Role == "Staff");
+                if (staffCount >= 3)
+                    return BadRequest(new { message = "This organization already has the maximum of 3 staff members." });
+            }
+
+            _db.OrganizationMembers.Add(new OrganizationMembers
+            {
+                UserId = dto.UserId,
+                OrganizationId = id,
+                Role = dto.Role,
+                DateJoined = DateTime.UtcNow
+            });
+            await _db.SaveChangesAsync();
+
+            return StatusCode(201, new
+            {
+                UserId = dto.UserId,
+                UserName = $"{user.FirstName} {user.LastName}",
+                dto.Role
+            });
+        }
+
+        // GET /api/developer/organizations/{id}/members
+        [HttpGet("organizations/{id}/members")]
+        [Authorize(Roles = "Developer")]
+        public async Task<IActionResult> GetOrgMembers(int id)
+        {
+            var exists = await _db.Organizations.AnyAsync(o => o.Id == id);
+            if (!exists) return NotFound(new { message = "Organization not found." });
+
+            var members = await (
+                from m in _db.OrganizationMembers
+                join u in _db.Users on m.UserId equals u.Id
+                where m.OrganizationId == id
+                orderby m.Role, u.FirstName
+                select new
+                {
+                    MemberId = m.Id,
+                    UserId = u.Id,
+                    FullName = u.FirstName + " " + u.LastName,
+                    u.Email,
+                    m.Role,
+                    u.IsActive,
+                    m.DateJoined
+                }
+            ).ToListAsync();
+
+            return Ok(members);
+        }
+
+        // GET /api/developer/organizations/{id}/branches
+        [HttpGet("organizations/{id}/branches")]
+        [Authorize(Roles = "Developer")]
+        public async Task<IActionResult> GetOrgBranches(int id)
+        {
+            var exists = await _db.Organizations.AnyAsync(o => o.Id == id);
+            if (!exists) return NotFound(new { message = "Organization not found." });
+
+            var branches = await _db.Branches
+                .Where(b => b.OrganizationId == id)
+                .OrderByDescending(b => b.IsActive)
+                .ThenBy(b => b.Name)
+                .Select(b => new { b.Id, b.Name, b.IsActive, b.DateCreated })
+                .ToListAsync();
+
+            return Ok(branches);
+        }
+
+        // POST /api/developer/organizations/{id}/branches
+        [HttpPost("organizations/{id}/branches")]
+        [Authorize(Roles = "Developer")]
+        public async Task<IActionResult> AddOrgBranch(int id, [FromBody] AddBranchDto dto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var org = await _db.Organizations.FindAsync(id);
+            if (org == null) return NotFound(new { message = "Organization not found." });
+
+            var duplicate = await _db.Branches
+                .AnyAsync(b => b.OrganizationId == id && b.Name.ToLower() == dto.Name.Trim().ToLower() && b.IsActive);
+            if (duplicate)
+                return Conflict(new { message = $"A branch named \"{dto.Name.Trim()}\" already exists in this organization." });
+
+            var branch = new Branch
+            {
+                OrganizationId = id,
+                CreatedByUserId = GetUserId(),
+                Name = dto.Name.Trim(),
+                DateCreated = DateTime.UtcNow,
+                IsActive = true
+            };
+            _db.Branches.Add(branch);
+            await _db.SaveChangesAsync();
+
+            return StatusCode(201, new { branch.Id, branch.Name, branch.DateCreated });
         }
     }
 }

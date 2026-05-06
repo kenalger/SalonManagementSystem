@@ -6,7 +6,7 @@
         public int OrganizationId { get; set; }
         public string Name { get; set; } 
         public string Description { get; set; }
-        public DateTime DurationMinutes { get; set; }
+        public int DurationMinutes { get; set; } = 30;
         public double Price { get; set; }
         public bool IsActive { get; set; } = true;
         public DateTime DateCreated { get; set; }

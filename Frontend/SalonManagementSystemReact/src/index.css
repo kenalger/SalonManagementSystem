@@ -1,15 +1,105 @@
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+@import "tailwindcss";
+
+/* ─── Light mode tokens ─────────────────────────────── */
+:root {
+  --background:            30 34% 95%;   /* cream  #F7F3EF */
+  --foreground:            19 35% 13%;   /* near-black brown */
+  --card:                   0  0% 100%;  /* white */
+  --card-foreground:       19 35% 13%;
+  --popover:                0  0% 100%;
+  --popover-foreground:    19 35% 13%;
+  --primary:               35 40% 75%;   /* beige  #D8C3A5 */
+  --primary-foreground:    19 38% 16%;   /* deep brown on beige */
+  --secondary:             33 30% 88%;   /* light warm beige */
+  --secondary-foreground:  19 29% 28%;   /* #5C4033 */
+  --muted:                 33 25% 90%;
+  --muted-foreground:      19 18% 48%;
+  --accent:                19 29% 28%;   /* deep brown #5C4033 */
+  --accent-foreground:     30 34% 95%;   /* cream */
+  --destructive:            0 65% 50%;
+  --destructive-foreground: 0  0% 100%;
+  --border:                35 28% 82%;
+  --input:                 35 28% 82%;
+  --ring:                  19 29% 28%;   /* deep brown */
 }
 
-body {
-  font-family: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;
-  -webkit-font-smoothing: antialiased;
+/* ─── Dark mode tokens ──────────────────────────────── */
+.dark {
+  --background:            19 40%  8%;   /* near-black brown */
+  --foreground:            30 34% 93%;   /* cream */
+  --card:                  19 35% 12%;   /* dark brown card */
+  --card-foreground:       30 34% 93%;
+  --popover:               19 35% 12%;
+  --popover-foreground:    30 34% 93%;
+  --primary:               35 38% 68%;   /* beige, slightly muted */
+  --primary-foreground:    19 40%  8%;
+  --secondary:             19 29% 18%;   /* dark warm brown */
+  --secondary-foreground:  30 34% 93%;
+  --muted:                 19 29% 18%;
+  --muted-foreground:      33 22% 62%;
+  --accent:                35 38% 68%;   /* beige as accent in dark */
+  --accent-foreground:     19 40%  8%;
+  --destructive:            0 65% 55%;
+  --destructive-foreground: 0  0% 100%;
+  --border:                19 25% 22%;
+  --input:                 19 25% 22%;
+  --ring:                  35 38% 68%;
 }
 
-#root {
-  width: 100%;
-  min-height: 100vh;
+/* ─── Tailwind v4 theme mapping ─────────────────────── */
+@theme inline {
+  /* Semantic color utilities */
+  --color-background:           hsl(var(--background));
+  --color-foreground:           hsl(var(--foreground));
+  --color-card:                 hsl(var(--card));
+  --color-card-foreground:      hsl(var(--card-foreground));
+  --color-popover:              hsl(var(--popover));
+  --color-popover-foreground:   hsl(var(--popover-foreground));
+  --color-primary:              hsl(var(--primary));
+  --color-primary-foreground:   hsl(var(--primary-foreground));
+  --color-secondary:            hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted:                hsl(var(--muted));
+  --color-muted-foreground:     hsl(var(--muted-foreground));
+  --color-accent:               hsl(var(--accent));
+  --color-accent-foreground:    hsl(var(--accent-foreground));
+  --color-destructive:          hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border:               hsl(var(--border));
+  --color-input:                hsl(var(--input));
+  --color-ring:                 hsl(var(--ring));
+
+  /* Brand palette as standalone utilities */
+  --color-beige:  #D8C3A5;
+  --color-cream:  #F7F3EF;
+  --color-brown:  #5C4033;
+  --color-white:  #ffffff;
+  --color-black:  #000000;
+
+  /* Border radius scale */
+  --radius:    0.5rem;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ─── Base layer ─────────────────────────────────────── */
+@layer base {
+  *, ::before, ::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  #root {
+    width: 100%;
+    min-height: 100vh;
+  }
 }

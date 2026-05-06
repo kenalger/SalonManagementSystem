@@ -1,223 +1,190 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import {
-  Box, AppBar, Toolbar, Typography, IconButton, Drawer,
-  List, ListItem, ListItemIcon, ListItemText, Avatar, Menu,
-  MenuItem, Card, CardContent, Grid, Divider, Chip, useTheme,
-  useMediaQuery, ListItemButton,
-} from '@mui/material';
+  Scissors, LayoutDashboard, CalendarDays, Users, Sparkles,
+  BarChart2, Settings, LogOut, Menu, ShieldCheck, Target,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
 import {
-  Menu as MenuIcon, ContentCut, Dashboard, CalendarMonth,
-  People, Spa, BarChart, Settings, Logout, AccountCircle,
-} from '@mui/icons-material';
+  DropdownMenu, DropdownMenuTrigger, DropdownMenuContent,
+  DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { cn } from '@/lib/utils';
 import { useAuth } from '../context/AuthContext';
 
 const DRAWER_WIDTH = 240;
 
 const navItems = [
-  { label: 'Dashboard', icon: <Dashboard /> },
-  { label: 'Appointments', icon: <CalendarMonth /> },
-  { label: 'Clients', icon: <People /> },
-  { label: 'Services', icon: <Spa /> },
-  { label: 'Reports', icon: <BarChart /> },
-  { label: 'Settings', icon: <Settings /> },
+  { label: 'Dashboard',    icon: LayoutDashboard, path: '/dashboard' },
+  { label: 'Appointments', icon: CalendarDays,    path: '/dashboard/appointments' },
+  { label: 'Clients',      icon: Users,           path: '/dashboard/clients' },
+  { label: 'Services',     icon: Sparkles,        path: '/dashboard/services' },
+  { label: 'Reports',      icon: BarChart2,       path: '/dashboard/reports' },
+  { label: 'KPI',          icon: Target,          path: '/dashboard/kpi' },
 ];
 
-const statCards = [
-  { label: "Today's Appointments", value: '—', color: '#667eea' },
-  { label: 'Active Clients', value: '—', color: '#764ba2' },
-  { label: 'Services Offered', value: '—', color: '#43a89b' },
-  { label: "Today's Revenue", value: '—', color: '#f86ca7' },
-];
+function SidebarContent({ organization, activeLabel, navigate, setMobileOpen, user, isDeveloper, onDevPanel }) {
+  return (
+    <div className="flex flex-col h-full bg-background">
+      <div className="flex h-16 items-center gap-3 px-4">
+        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-brown dark:bg-beige shrink-0">
+          <Scissors className="w-4 h-4 text-cream dark:text-[#1A0F0A]" />
+        </div>
+        <div className="overflow-hidden">
+          <p className="font-bold text-sm leading-tight truncate">
+            {organization?.name || 'SalonMS'}
+          </p>
+          {organization?.location && (
+            <p className="text-xs text-muted-foreground truncate">{organization.location}</p>
+          )}
+        </div>
+      </div>
+
+      <Separator />
+
+      <nav className="flex-1 px-2 py-2 space-y-0.5">
+        {navItems.map(({ label, icon: Icon, path }) => (
+          <button
+            key={label}
+            onClick={() => { navigate(path); setMobileOpen?.(false); }}
+            className={cn(
+              'w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+              activeLabel === label
+                ? 'bg-brown text-cream dark:bg-beige dark:text-[#1A0F0A]'
+                : 'text-muted-foreground hover:bg-secondary hover:text-foreground',
+            )}
+          >
+            <Icon className="w-4 h-4 shrink-0" />
+            {label}
+          </button>
+        ))}
+
+        {isDeveloper && (
+          <>
+            <Separator className="my-1" />
+            <button
+              onClick={() => { onDevPanel(); setMobileOpen?.(false); }}
+              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-brown dark:text-beige hover:bg-brown/10 dark:hover:bg-beige/10"
+            >
+              <ShieldCheck className="w-4 h-4 shrink-0" />
+              Developer Panel
+            </button>
+          </>
+        )}
+      </nav>
+
+      <Separator />
+
+      <div className="px-4 py-3">
+        <p className="text-xs text-muted-foreground">Signed in as</p>
+        <p className="text-sm font-semibold truncate">{user?.fullName}</p>
+      </div>
+    </div>
+  );
+}
 
 export default function DashboardPage() {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
-  const { user, organization, logout } = useAuth();
+  const location = useLocation();
+  const { user, organization, logout, isDeveloper } = useAuth();
 
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeNav, setActiveNav] = useState('Dashboard');
-  const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login', { replace: true });
+  const activeItem = navItems.find(item =>
+    item.path === '/dashboard'
+      ? location.pathname === '/dashboard'
+      : location.pathname.startsWith(item.path)
+  ) ?? navItems[0];
+
+  const handleLogout = () => { logout(); navigate('/login', { replace: true }); };
+
+  const sidebarProps = {
+    organization,
+    activeLabel: activeItem.label,
+    navigate,
+    user,
+    isDeveloper,
+    onDevPanel: () => navigate('/developer'),
   };
 
-  const drawerContent = (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-        <ContentCut sx={{ color: 'primary.main', fontSize: 28 }} />
-        <Box>
-          <Typography variant="subtitle1" fontWeight={700} lineHeight={1.2}>
-            {organization?.name || 'SalonMS'}
-          </Typography>
-          {organization?.location && (
-            <Typography variant="caption" color="text.secondary">
-              {organization.location}
-            </Typography>
-          )}
-        </Box>
-      </Box>
-      <Divider />
-      <List sx={{ flex: 1, pt: 1 }}>
-        {navItems.map(({ label, icon }) => (
-          <ListItem key={label} disablePadding>
-            <ListItemButton
-              selected={activeNav === label}
-              onClick={() => { setActiveNav(label); setMobileOpen(false); }}
-              sx={{
-                mx: 1, borderRadius: 2, mb: 0.5,
-                '&.Mui-selected': {
-                  bgcolor: 'primary.main',
-                  color: 'white',
-                  '& .MuiListItemIcon-root': { color: 'white' },
-                  '&:hover': { bgcolor: 'primary.dark' },
-                },
-              }}
-            >
-              <ListItemIcon sx={{ minWidth: 36 }}>{icon}</ListItemIcon>
-              <ListItemText primary={label} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <Box sx={{ p: 2 }}>
-        <Typography variant="caption" color="text.secondary">
-          Signed in as
-        </Typography>
-        <Typography variant="body2" fontWeight={600} noWrap>
-          {user?.fullName}
-        </Typography>
-      </Box>
-    </Box>
-  );
-
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'grey.50' }}>
-      <AppBar
-        position="fixed"
-        elevation={0}
-        sx={{
-          width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
-          ml: { md: `${DRAWER_WIDTH}px` },
-          bgcolor: 'white',
-          borderBottom: '1px solid',
-          borderColor: 'divider',
-          color: 'text.primary',
-        }}
+    <div className="flex min-h-screen bg-background">
+      {/* Desktop sidebar */}
+      <aside
+        className="hidden md:flex flex-col fixed inset-y-0 left-0 z-30 border-r bg-background"
+        style={{ width: DRAWER_WIDTH }}
       >
-        <Toolbar>
-          {isMobile && (
-            <IconButton edge="start" onClick={() => setMobileOpen(true)} sx={{ mr: 1 }}>
-              <MenuIcon />
-            </IconButton>
-          )}
-          <Typography variant="h6" fontWeight={600} sx={{ flex: 1 }}>
-            {activeNav}
-          </Typography>
-          <Chip
-            label={organization?.name || 'No Organization'}
-            size="small"
-            color="primary"
-            variant="outlined"
-            sx={{ mr: 1 }}
-          />
-          <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
-            <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main', fontSize: 14 }}>
-              {user?.fullName?.[0] ?? '?'}
-            </Avatar>
-          </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={() => setAnchorEl(null)}
+        <SidebarContent {...sidebarProps} />
+      </aside>
+
+      {/* Mobile drawer */}
+      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+        <SheetContent side="left" className="p-0 w-60">
+          <SidebarContent {...sidebarProps} setMobileOpen={setMobileOpen} />
+        </SheetContent>
+      </Sheet>
+
+      <div className="flex-1 flex flex-col md:ml-[240px]">
+        {/* Top bar */}
+        <header className="sticky top-0 z-20 flex h-16 items-center gap-3 px-4 border-b bg-background">
+          <button
+            className="md:hidden p-2 rounded-md hover:bg-secondary transition-colors"
+            onClick={() => setMobileOpen(true)}
           >
-            <MenuItem disabled>
-              <Typography variant="body2">{user?.email}</Typography>
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleLogout}>
-              <ListItemIcon><Logout fontSize="small" /></ListItemIcon>
-              Sign Out
-            </MenuItem>
-          </Menu>
-        </Toolbar>
-      </AppBar>
+            <Menu className="w-5 h-5" />
+          </button>
 
-      <Box component="nav" sx={{ width: { md: DRAWER_WIDTH }, flexShrink: { md: 0 } }}>
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={() => setMobileOpen(false)}
-          ModalProps={{ keepMounted: true }}
-          sx={{ display: { xs: 'block', md: 'none' }, '& .MuiDrawer-paper': { width: DRAWER_WIDTH } }}
-        >
-          {drawerContent}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', md: 'block' },
-            '& .MuiDrawer-paper': { width: DRAWER_WIDTH, boxSizing: 'border-box' },
-          }}
-          open
-        >
-          {drawerContent}
-        </Drawer>
-      </Box>
+          <h1 className="flex-1 text-lg font-semibold">{activeItem.label}</h1>
 
-      <Box
-        component="main"
-        sx={{
-          flex: 1,
-          p: 3,
-          mt: 8,
-          width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
-        }}
-      >
-        <Typography variant="h5" fontWeight={700} mb={0.5}>
-          Welcome back, {user?.fullName?.split(' ')[0]}
-        </Typography>
-        <Typography variant="body2" color="text.secondary" mb={3}>
-          Here&apos;s what&apos;s happening at {organization?.name || 'your salon'} today.
-        </Typography>
+          <Badge variant="outline" className="hidden sm:inline-flex border-brown/30 text-brown dark:border-beige/30 dark:text-beige">
+            {organization?.name || 'No Organization'}
+          </Badge>
 
-        <Grid container spacing={3}>
-          {statCards.map(({ label, value, color }) => (
-            <Grid key={label} size={{ xs: 12, sm: 6, lg: 3 }}>
-              <Card sx={{ borderRadius: 3, boxShadow: 2 }}>
-                <CardContent>
-                  <Box
-                    sx={{
-                      width: 44, height: 44, borderRadius: 2, bgcolor: color,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1.5,
-                    }}
-                  >
-                    <AccountCircle sx={{ color: 'white' }} />
-                  </Box>
-                  <Typography variant="h4" fontWeight={700}>{value}</Typography>
-                  <Typography variant="body2" color="text.secondary">{label}</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+          <ThemeToggle />
 
-        <Card sx={{ mt: 3, borderRadius: 3, boxShadow: 2 }}>
-          <CardContent sx={{ p: 3 }}>
-            <Typography variant="h6" fontWeight={600} mb={1}>
-              Getting Started
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Your salon management system is ready. Start by adding your services and
-              inviting staff members to your organization.
-            </Typography>
-          </CardContent>
-        </Card>
-      </Box>
-    </Box>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                <Avatar className="h-8 w-8">
+                  <AvatarFallback className="bg-brown text-cream dark:bg-beige dark:text-[#1A0F0A] text-xs font-bold">
+                    {user?.fullName?.[0] ?? '?'}
+                  </AvatarFallback>
+                </Avatar>
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuLabel className="font-normal">
+                <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => navigate('/dashboard/settings')}
+                className="gap-2 cursor-pointer"
+              >
+                <Settings className="w-4 h-4" />
+                Settings
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={handleLogout}
+                className="text-destructive focus:text-destructive gap-2 cursor-pointer"
+              >
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </header>
+
+        <main className="flex-1 p-6">
+          <Outlet />
+        </main>
+      </div>
+    </div>
   );
 }

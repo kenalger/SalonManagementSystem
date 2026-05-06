@@ -156,6 +156,33 @@ namespace SalonSystemAPI.Controllers
             }
         }
 
+        // GET /api/organizations/{orgId}/members
+        [HttpGet("{orgId:int}/members")]
+        public async Task<IActionResult> GetMembers(int orgId)
+        {
+            var userId = GetUserId();
+            var isMember = await _db.OrganizationMembers
+                .AnyAsync(m => m.UserId == userId && m.OrganizationId == orgId);
+            if (!isMember)
+                return Forbid();
+
+            var members = await (
+                from m in _db.OrganizationMembers
+                join u in _db.Users on m.UserId equals u.Id
+                where m.OrganizationId == orgId && m.Role == "Staff" && u.IsActive
+                orderby m.DateJoined
+                select new
+                {
+                    m.UserId,
+                    UserName = $"{u.FirstName} {u.LastName}",
+                    u.Email,
+                    m.DateJoined,
+                }
+            ).ToListAsync();
+
+            return Ok(members);
+        }
+
         [HttpPost("join")]
         public async Task<IActionResult> JoinByCode([FromBody] JoinByCodeDto dto)
         {

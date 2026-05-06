@@ -30,17 +30,34 @@ namespace SalonSystemAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("BookingReference")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("BookingType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("BranchId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CancellationReason")
+                        .HasColumnType("text");
+
                     b.Property<string>("Contact")
                         .HasColumnType("text");
 
                     b.Property<int?>("CustomerId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<double?>("Discount")
                         .HasColumnType("double precision");
 
                     b.Property<DateTime?>("EndTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<double?>("FinalPrice")
                         .HasColumnType("double precision");
@@ -61,11 +78,125 @@ namespace SalonSystemAPI.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("StartTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BookingReference")
+                        .IsUnique();
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("OrganizationId", "BranchId", "StartTime");
+
+                    b.HasIndex("OrganizationId", "Status", "IsActive");
+
+                    b.HasIndex("StaffUserId", "StartTime", "EndTime");
+
                     b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("SalonSystemAPI.Models.Branch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId", "IsActive");
+
+                    b.ToTable("Branches");
+                });
+
+            modelBuilder.Entity("SalonSystemAPI.Models.Client", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApprovalStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("ApprovedByUserId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ApprovedDiscountType")
+                        .HasColumnType("text");
+
+                    b.Property<decimal?>("ApprovedDiscountValue")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Contact")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DateApproved")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("DiscountType")
+                        .HasColumnType("text");
+
+                    b.Property<decimal?>("DiscountValue")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsMember")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("MembershipStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("RequestedByUserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId", "ApprovalStatus");
+
+                    b.HasIndex("OrganizationId", "IsActive");
+
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("SalonSystemAPI.Models.Organization", b =>
@@ -76,8 +207,11 @@ namespace SalonSystemAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -116,15 +250,23 @@ namespace SalonSystemAPI.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DateJoined")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("OrganizationId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId", "Role");
+
+                    b.HasIndex("UserId", "OrganizationId");
 
                     b.ToTable("OrganizationMembers");
                 });
@@ -138,14 +280,14 @@ namespace SalonSystemAPI.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DurationMinutes")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("DurationMinutes")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
@@ -162,7 +304,73 @@ namespace SalonSystemAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OrganizationId", "IsActive");
+
                     b.ToTable("ServiceTypes");
+                });
+
+            modelBuilder.Entity("SalonSystemAPI.Models.StaffQuota", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BranchId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Classification")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("CurrentValue")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsAchieved")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PeriodType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("QuotaType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<decimal>("TargetValue")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "OrganizationId", "IsActive");
+
+                    b.HasIndex("OrganizationId", "IsActive", "StartDate", "EndDate");
+
+                    b.ToTable("StaffQuotas");
                 });
 
             modelBuilder.Entity("SalonSystemAPI.Models.Users", b =>
@@ -175,7 +383,7 @@ namespace SalonSystemAPI.Migrations
 
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("Email")
@@ -197,6 +405,10 @@ namespace SalonSystemAPI.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("text");
 

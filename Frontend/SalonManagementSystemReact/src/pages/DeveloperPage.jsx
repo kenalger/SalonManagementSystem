@@ -2,8 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Scissors, Users, Building2, GitBranch, LayoutDashboard,
-  LogOut, Menu, Plus, ToggleLeft, ToggleRight, RefreshCw,
-  ShieldCheck, ChevronRight,
+  LogOut, Menu, Plus, RefreshCw,
+  ShieldCheck, ChevronRight, MoreHorizontal, Eye,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -52,7 +52,7 @@ function StatCard({ label, value, icon: Icon, color }) {
 
 // ── Create User dialog ─────────────────────────────────────────────────────────
 function CreateUserDialog({ open, onClose, onCreated }) {
-  const [form, setForm] = useState({ firstName: '', lastName: '', email: '', password: '' });
+  const [form, setForm] = useState({ firstName: '', lastName: '', email: '', password: '', role: 'User' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -65,7 +65,7 @@ function CreateUserDialog({ open, onClose, onCreated }) {
     try {
       const { data } = await developerApi.createUser(form);
       onCreated(data);
-      setForm({ firstName: '', lastName: '', email: '', password: '' });
+      setForm({ firstName: '', lastName: '', email: '', password: '', role: 'User' });
       onClose();
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to create user.');
@@ -107,6 +107,19 @@ function CreateUserDialog({ open, onClose, onCreated }) {
             <Label htmlFor="cu-password">Password</Label>
             <Input id="cu-password" name="password" type="password" value={form.password}
               onChange={handleChange} required placeholder="Min. 6 characters" minLength={6} />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="cu-role">Role</Label>
+            <select
+              id="cu-role"
+              name="role"
+              value={form.role}
+              onChange={handleChange}
+              className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <option value="User">User</option>
+              <option value="Admin">Admin</option>
+            </select>
           </div>
           <DialogFooter className="pt-1">
             <Button type="button" variant="outline" onClick={onClose} disabled={loading}>Cancel</Button>
@@ -227,6 +240,379 @@ function CreateOrgDialog({ open, onClose, onCreated, users }) {
   );
 }
 
+// ── Edit Organization dialog ───────────────────────────────────────────────────
+function EditOrgDialog({ open, onClose, org, onSaved }) {
+  const [form, setForm] = useState({ name: '', description: '', location: '', email: '' });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (org) setForm({ name: org.name ?? '', description: org.description ?? '', location: org.location ?? '', email: org.email ?? '' });
+  }, [org]);
+
+  const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      const { data } = await developerApi.updateOrg(org.id, form);
+      onSaved(data);
+      onClose();
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to update organization.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Edit Organization</DialogTitle>
+        </DialogHeader>
+        {error && (
+          <Alert variant="destructive" className="mb-1">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <div className="space-y-1.5">
+            <Label htmlFor="eo-name">Organization Name</Label>
+            <Input id="eo-name" name="name" value={form.name} onChange={handleChange} required />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="eo-desc">Description</Label>
+            <Input id="eo-desc" name="description" value={form.description} onChange={handleChange} placeholder="Optional" />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label htmlFor="eo-location">Location</Label>
+              <Input id="eo-location" name="location" value={form.location} onChange={handleChange} placeholder="City, State" />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="eo-email">Business Email</Label>
+              <Input id="eo-email" name="email" type="email" value={form.email} onChange={handleChange} placeholder="salon@example.com" />
+            </div>
+          </div>
+          <DialogFooter className="pt-1">
+            <Button type="button" variant="outline" onClick={onClose} disabled={loading}>Cancel</Button>
+            <Button type="submit" disabled={loading}
+              className="bg-brown text-cream hover:bg-brown/90 dark:bg-beige dark:text-[#1A0F0A] dark:hover:bg-beige/90">
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Saving…
+                </span>
+              ) : 'Save Changes'}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+// ── Add Org Member dialog ──────────────────────────────────────────────────────
+function AddOrgMemberDialog({ open, onClose, org, users, onAdded }) {
+  const [form, setForm] = useState({ userId: '', role: 'Staff' });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => { if (!open) setForm({ userId: '', role: 'Staff' }); }, [open]);
+
+  const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      await developerApi.addOrgMember(org.id, { userId: parseInt(form.userId), role: form.role });
+      onAdded();
+      onClose();
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to add member.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const eligible = users.filter((u) => u.isActive && u.role !== 'Developer');
+
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-sm">
+        <DialogHeader>
+          <DialogTitle>Add Member to {org?.name}</DialogTitle>
+        </DialogHeader>
+        {error && (
+          <Alert variant="destructive" className="mb-1">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <div className="space-y-1.5">
+            <Label htmlFor="am-user">User</Label>
+            <select
+              id="am-user" name="userId" value={form.userId} onChange={handleChange} required
+              className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <option value="">— Select a user —</option>
+              {eligible.map((u) => (
+                <option key={u.id} value={u.id}>{u.firstName} {u.lastName} ({u.email})</option>
+              ))}
+            </select>
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="am-role">Role</Label>
+            <select
+              id="am-role" name="role" value={form.role} onChange={handleChange}
+              className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <option value="Staff">Staff</option>
+              <option value="Owner">Owner</option>
+            </select>
+          </div>
+          <DialogFooter className="pt-1">
+            <Button type="button" variant="outline" onClick={onClose} disabled={loading}>Cancel</Button>
+            <Button type="submit" disabled={loading || !form.userId}
+              className="bg-brown text-cream hover:bg-brown/90 dark:bg-beige dark:text-[#1A0F0A] dark:hover:bg-beige/90">
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Adding…
+                </span>
+              ) : 'Add Member'}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+// ── Add Branch dialog ──────────────────────────────────────────────────────────
+function AddBranchDialog({ open, onClose, org, onAdded }) {
+  const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => { if (!open) setName(''); }, [open]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      await developerApi.addOrgBranch(org.id, { name });
+      onAdded();
+      onClose();
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to add branch.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-sm">
+        <DialogHeader>
+          <DialogTitle>Add Branch to {org?.name}</DialogTitle>
+        </DialogHeader>
+        {error && (
+          <Alert variant="destructive" className="mb-1">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <div className="space-y-1.5">
+            <Label htmlFor="ab-name">Branch Name</Label>
+            <Input id="ab-name" value={name} onChange={(e) => setName(e.target.value)} required placeholder="e.g. North Branch" />
+          </div>
+          <DialogFooter className="pt-1">
+            <Button type="button" variant="outline" onClick={onClose} disabled={loading}>Cancel</Button>
+            <Button type="submit" disabled={loading}
+              className="bg-brown text-cream hover:bg-brown/90 dark:bg-beige dark:text-[#1A0F0A] dark:hover:bg-beige/90">
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Adding…
+                </span>
+              ) : 'Add Branch'}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+// ── View Members Modal ─────────────────────────────────────────────────────────
+function ViewMembersDialog({ open, onClose, org }) {
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!open || !org) return;
+    setLoading(true);
+    developerApi.getOrgMembers(org.id)
+      .then(res => setMembers(res.data))
+      .catch(() => setMembers([]))
+      .finally(() => setLoading(false));
+  }, [open, org]);
+
+  const roleColor = {
+    Owner: 'bg-brown/10 text-brown dark:bg-beige/10 dark:text-beige border-brown/20 dark:border-beige/20',
+    Staff: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800',
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>
+            <span className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              Members — {org?.name}
+            </span>
+          </DialogTitle>
+        </DialogHeader>
+
+        <div className="min-h-[120px]">
+          {loading ? (
+            <div className="space-y-2 py-2">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-3 p-2">
+                  <div className="w-8 h-8 rounded-full bg-muted animate-pulse" />
+                  <div className="flex-1 space-y-1.5">
+                    <div className="h-3 w-32 rounded bg-muted animate-pulse" />
+                    <div className="h-3 w-40 rounded bg-muted animate-pulse" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : members.length === 0 ? (
+            <div className="py-10 text-center text-sm text-muted-foreground">
+              No members in this organization.
+            </div>
+          ) : (
+            <div className="divide-y divide-border -mx-6 px-6">
+              {members.map(m => (
+                <div key={m.memberId} className="flex items-center gap-3 py-3">
+                  <Avatar className="h-8 w-8 shrink-0">
+                    <AvatarFallback className="bg-brown/10 dark:bg-beige/10 text-brown dark:text-beige text-xs font-bold">
+                      {m.fullName?.[0] ?? '?'}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{m.fullName}</p>
+                    <p className="text-xs text-muted-foreground truncate">{m.email}</p>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <Badge
+                      variant="outline"
+                      className={cn('text-xs', roleColor[m.role] ?? 'border-border')}
+                    >
+                      {m.role}
+                    </Badge>
+                    <Badge
+                      variant={m.isActive ? 'outline' : 'secondary'}
+                      className={cn('text-xs', m.isActive && 'border-green-500 text-green-700 dark:text-green-400')}
+                    >
+                      {m.isActive ? 'Active' : 'Inactive'}
+                    </Badge>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <DialogFooter>
+          <p className="text-xs text-muted-foreground mr-auto">
+            {members.length} member{members.length !== 1 ? 's' : ''}
+          </p>
+          <Button variant="outline" onClick={onClose}>Close</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+// ── View Branches Modal ────────────────────────────────────────────────────────
+function ViewBranchesDialog({ open, onClose, org }) {
+  const [branches, setBranches] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!open || !org) return;
+    setLoading(true);
+    developerApi.getOrgBranches(org.id)
+      .then(res => setBranches(res.data))
+      .catch(() => setBranches([]))
+      .finally(() => setLoading(false));
+  }, [open, org]);
+
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-sm">
+        <DialogHeader>
+          <DialogTitle>
+            <span className="flex items-center gap-2">
+              <GitBranch className="w-4 h-4" />
+              Branches — {org?.name}
+            </span>
+          </DialogTitle>
+        </DialogHeader>
+
+        <div className="min-h-[100px]">
+          {loading ? (
+            <div className="space-y-2 py-2">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="h-10 rounded-md bg-muted animate-pulse" />
+              ))}
+            </div>
+          ) : branches.length === 0 ? (
+            <div className="py-10 text-center text-sm text-muted-foreground">
+              No branches found.
+            </div>
+          ) : (
+            <div className="divide-y divide-border -mx-6 px-6">
+              {branches.map(b => (
+                <div key={b.id} className="flex items-center justify-between py-3">
+                  <div>
+                    <p className="text-sm font-medium">{b.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      Added {new Date(b.dateCreated).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <Badge
+                    variant={b.isActive ? 'outline' : 'secondary'}
+                    className={cn('text-xs', b.isActive && 'border-green-500 text-green-700 dark:text-green-400')}
+                  >
+                    {b.isActive ? 'Active' : 'Inactive'}
+                  </Badge>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <DialogFooter>
+          <p className="text-xs text-muted-foreground mr-auto">
+            {branches.length} branch{branches.length !== 1 ? 'es' : ''}
+          </p>
+          <Button variant="outline" onClick={onClose}>Close</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 // ── Sidebar ────────────────────────────────────────────────────────────────────
 function SidebarContent({ activeNav, setActiveNav, setMobileOpen, user }) {
   return (
@@ -290,6 +676,13 @@ export default function DeveloperPage() {
   const [createUserOpen, setCreateUserOpen] = useState(false);
   const [createOrgOpen, setCreateOrgOpen] = useState(false);
 
+  const [selectedOrg, setSelectedOrg] = useState(null);
+  const [editOrgOpen, setEditOrgOpen] = useState(false);
+  const [addMemberOpen, setAddMemberOpen] = useState(false);
+  const [addBranchOpen, setAddBranchOpen] = useState(false);
+  const [viewMembersOpen, setViewMembersOpen] = useState(false);
+  const [viewBranchesOpen, setViewBranchesOpen] = useState(false);
+
   const fetchAll = useCallback(async () => {
     setLoading(true);
     setError('');
@@ -322,6 +715,41 @@ export default function DeveloperPage() {
     } catch (err) {
       alert(err.response?.data?.message || 'Failed to toggle user status.');
     }
+  };
+
+  const handleChangeRole = async (id, role) => {
+    try {
+      const { data } = await developerApi.changeRole(id, role);
+      setUsers((prev) => prev.map((u) => u.id === id ? { ...u, role: data.role } : u));
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to change role.');
+    }
+  };
+
+  const openOrgDialog = (org, dialog) => {
+    setSelectedOrg(org);
+    if (dialog === 'edit') setEditOrgOpen(true);
+    else if (dialog === 'member') setAddMemberOpen(true);
+    else if (dialog === 'branch') setAddBranchOpen(true);
+    else if (dialog === 'viewMembers') setViewMembersOpen(true);
+    else if (dialog === 'viewBranches') setViewBranchesOpen(true);
+  };
+
+  const handleToggleOrg = async (id) => {
+    try {
+      const { data } = await developerApi.toggleOrgActive(id);
+      setOrgs((prev) => prev.map((o) => o.id === id ? { ...o, isActive: data.isActive } : o));
+      setStats((prev) => prev ? {
+        ...prev,
+        totalOrgs: data.isActive ? prev.totalOrgs + 1 : prev.totalOrgs - 1,
+      } : prev);
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to toggle organization status.');
+    }
+  };
+
+  const handleOrgSaved = (updated) => {
+    setOrgs((prev) => prev.map((o) => o.id === updated.id ? { ...o, ...updated } : o));
   };
 
   const handleLogout = () => { logout(); navigate('/login', { replace: true }); };
@@ -470,9 +898,9 @@ export default function DeveloperPage() {
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         <Badge variant={u.role === 'Developer' ? 'default' : 'secondary'}
-                          className={u.role === 'Developer'
-                            ? 'bg-brown text-cream dark:bg-beige dark:text-[#1A0F0A] text-xs'
-                            : 'text-xs'}>
+                          className={cn('text-xs', u.role === 'Developer'
+                            ? 'bg-brown text-cream dark:bg-beige dark:text-[#1A0F0A]'
+                            : u.role === 'Admin' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 border-0' : '')}>
                           {u.role}
                         </Badge>
                         <Badge variant={u.isActive ? 'outline' : 'destructive'}
@@ -480,15 +908,43 @@ export default function DeveloperPage() {
                           {u.isActive ? 'Active' : 'Inactive'}
                         </Badge>
                         {u.role !== 'Developer' && (
-                          <button
-                            onClick={() => handleToggleActive(u.id)}
-                            className="text-muted-foreground hover:text-foreground transition-colors ml-1"
-                            title={u.isActive ? 'Deactivate' : 'Activate'}
-                          >
-                            {u.isActive
-                              ? <ToggleRight className="w-5 h-5 text-green-600 dark:text-green-400" />
-                              : <ToggleLeft className="w-5 h-5" />}
-                          </button>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <button
+                                className="text-muted-foreground hover:text-foreground transition-colors ml-1 p-0.5 rounded"
+                                title="Actions"
+                              >
+                                <MoreHorizontal className="w-4 h-4" />
+                              </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-44">
+                              <DropdownMenuLabel className="text-xs text-muted-foreground font-normal">
+                                Change Role
+                              </DropdownMenuLabel>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                onClick={() => handleChangeRole(u.id, 'Admin')}
+                                disabled={u.role === 'Admin'}
+                                className="cursor-pointer"
+                              >
+                                Set as Admin
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => handleChangeRole(u.id, 'User')}
+                                disabled={u.role === 'User'}
+                                className="cursor-pointer"
+                              >
+                                Set as User
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                onClick={() => handleToggleActive(u.id)}
+                                className={cn('cursor-pointer', u.isActive ? 'text-red-500 focus:text-red-500 focus:bg-red-50' : '')}
+                              >
+                                {u.isActive ? 'Deactivate' : 'Activate'}
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         )}
                       </div>
                     </div>
@@ -502,7 +958,7 @@ export default function DeveloperPage() {
           {activeNav === 'Organizations' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <p className="text-sm text-muted-foreground">{orgs.length} active organizations</p>
+                <p className="text-sm text-muted-foreground">{orgs.length} organization{orgs.length !== 1 ? 's' : ''}</p>
                 <Button size="sm" onClick={() => setCreateOrgOpen(true)}
                   className="gap-1.5 bg-brown text-cream hover:bg-brown/90 dark:bg-beige dark:text-[#1A0F0A] dark:hover:bg-beige/90">
                   <Plus className="w-4 h-4" /> New Organization
@@ -515,24 +971,76 @@ export default function DeveloperPage() {
                 ) : orgs.length === 0 ? (
                   <p className="text-center text-muted-foreground text-sm py-6">No organizations yet.</p>
                 ) : orgs.map((o) => (
-                  <Card key={o.id} className="shadow-sm border-border/60">
+                  <Card key={o.id} className={cn('shadow-sm border-border/60', !o.isActive && 'opacity-70')}>
                     <CardContent className="p-4">
                       <div className="flex items-start justify-between gap-3">
-                        <div className="min-w-0">
-                          <p className="font-semibold truncate">{o.name}</p>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <p className="font-semibold truncate">{o.name}</p>
+                            <Badge
+                              variant={o.isActive ? 'outline' : 'destructive'}
+                              className={cn('text-xs shrink-0', o.isActive && 'border-green-500 text-green-700 dark:text-green-400')}
+                            >
+                              {o.isActive ? 'Active' : 'Held'}
+                            </Badge>
+                          </div>
                           {o.location && (
                             <p className="text-xs text-muted-foreground truncate">{o.location}</p>
                           )}
                         </div>
-                        <p className="text-xs text-muted-foreground shrink-0">
-                          {new Date(o.dateCreated).toLocaleDateString()}
-                        </p>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <p className="text-xs text-muted-foreground">
+                            {new Date(o.dateCreated).toLocaleDateString()}
+                          </p>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <button className="text-muted-foreground hover:text-foreground transition-colors p-0.5 rounded" title="Actions">
+                                <MoreHorizontal className="w-4 h-4" />
+                              </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-48">
+                              <DropdownMenuLabel className="text-xs text-muted-foreground font-normal">Organization Actions</DropdownMenuLabel>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem onClick={() => openOrgDialog(o, 'edit')} className="cursor-pointer">
+                                Edit Details
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => openOrgDialog(o, 'member')} className="cursor-pointer">
+                                Add Member
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => openOrgDialog(o, 'branch')} className="cursor-pointer">
+                                Add Branch
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem onClick={() => openOrgDialog(o, 'viewMembers')} className="cursor-pointer">
+                                <Eye className="w-3.5 h-3.5 mr-2" /> View Members
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => openOrgDialog(o, 'viewBranches')} className="cursor-pointer">
+                                <GitBranch className="w-3.5 h-3.5 mr-2" /> View Branches
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                onClick={() => handleToggleOrg(o.id)}
+                                className={cn('cursor-pointer', o.isActive ? 'text-red-500 focus:text-red-500 focus:bg-red-50 dark:focus:bg-red-950' : 'text-green-600 focus:text-green-600')}
+                              >
+                                {o.isActive ? 'Hold (Disable)' : 'Re-enable'}
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
                       </div>
                       <div className="flex flex-wrap gap-2 mt-2.5">
-                        <Badge variant="secondary" className="text-xs gap-1">
+                        <Badge
+                          variant="secondary"
+                          className="text-xs gap-1 cursor-pointer hover:bg-secondary/70"
+                          onClick={() => openOrgDialog(o, 'viewMembers')}
+                        >
                           <Users className="w-3 h-3" /> {o.memberCount} member{o.memberCount !== 1 ? 's' : ''}
                         </Badge>
-                        <Badge variant="secondary" className="text-xs gap-1">
+                        <Badge
+                          variant="secondary"
+                          className="text-xs gap-1 cursor-pointer hover:bg-secondary/70"
+                          onClick={() => openOrgDialog(o, 'viewBranches')}
+                        >
                           <GitBranch className="w-3 h-3" /> {o.branchCount} branch{o.branchCount !== 1 ? 'es' : ''}
                         </Badge>
                         {o.owner ? (
@@ -573,6 +1081,40 @@ export default function DeveloperPage() {
           setOrgs((prev) => [newOrg, ...prev]);
           setStats((prev) => prev ? { ...prev, totalOrgs: prev.totalOrgs + 1, totalBranches: prev.totalBranches + 1 } : prev);
         }}
+      />
+
+      <EditOrgDialog
+        open={editOrgOpen}
+        onClose={() => setEditOrgOpen(false)}
+        org={selectedOrg}
+        onSaved={handleOrgSaved}
+      />
+
+      <AddOrgMemberDialog
+        open={addMemberOpen}
+        onClose={() => setAddMemberOpen(false)}
+        org={selectedOrg}
+        users={users}
+        onAdded={fetchAll}
+      />
+
+      <AddBranchDialog
+        open={addBranchOpen}
+        onClose={() => setAddBranchOpen(false)}
+        org={selectedOrg}
+        onAdded={fetchAll}
+      />
+
+      <ViewMembersDialog
+        open={viewMembersOpen}
+        onClose={() => setViewMembersOpen(false)}
+        org={selectedOrg}
+      />
+
+      <ViewBranchesDialog
+        open={viewBranchesOpen}
+        onClose={() => setViewBranchesOpen(false)}
+        org={selectedOrg}
       />
     </div>
   );
